@@ -1,5 +1,9 @@
+* {
+  font-family: 'Roboto Mono', monospace;
+}
 body {
+  background-image: url("https://www.kurzweilai.net/images/neuron-.png");
+  background-position: center;
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
 }
