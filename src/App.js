@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import FormData from 'form-data'
 import spinner from './assets/loading.gif';
 import './App.css';
 
-const App = () => {
 
+
+const App = () => {
+  
   const [value, setValue] = useState('');
   const [botResponse, setBotResponse] = useState('Hello, how can I help you?');
   const [userResponse, setUserResponse] = useState('')
   const [loading, setLoading] = useState(false)
+  
+  const form = new FormData();
 
+  const options = {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }}
 
   const handleButton = async (e) => {
     e.preventDefault();
@@ -17,11 +26,27 @@ const App = () => {
     setValue('')
   }
 
-  useEffect(()=>{
+  // const cleanData = (response) => {
+  //   response.replace('<br><br>','')
+  //   do {response.replace('<br><br>','. ')}
+  //   while (response.includes('<br><br>'))
+  // }
+
+  useEffect(async()=>{
     setLoading(true)
     try{
-      axios.post('http://almesa93.pythonanywhere.com/',{variable: userResponse})
-      .then(response=>JSON.parse(response).text.replace('<br><br>',''))
+      await form.append('variable', userResponse)
+      console.log(form);
+      await axios.post('http://almesa93.pythonanywhere.com/',form, options)
+      // acceder al objeto
+      .then(response=>{
+        let string
+        response.replace('<br><br>','')
+        do {response.replace('<br><br>','. ')}
+        while (response.includes('<br><br>'))
+        return response
+      })
+      // cleanData(response))
       .then(response=>console.log("la respuesta es "+response))
       .then(response=>setBotResponse(response))
     }
