@@ -26,28 +26,25 @@ const App = () => {
     setValue('')
   }
 
-  // const cleanData = (response) => {
-  //   response.replace('<br><br>','')
-  //   do {response.replace('<br><br>','. ')}
-  //   while (response.includes('<br><br>'))
-  // }
-
-  useEffect(async()=>{
+  useEffect(()=>{
     setLoading(true)
     try{
-      await form.append('variable', userResponse)
+      // form.append('variable', userResponse)
+      form.append('variable', "I need help")
       console.log(form);
-      await axios.post('http://almesa93.pythonanywhere.com/',form, options)
+      axios.post('http://almesa93.pythonanywhere.com/',form, options)
+      // .then(response=>console.log("la respuesta es "+response))
       // acceder al objeto
+      // .then(response=>JSON.parse(response).text)
+      .then(response=>response.text)
+
+      .then(response=>console.log("la respuesta es "+response))
       .then(response=>{
-        let string
         response.replace('<br><br>','')
         do {response.replace('<br><br>','. ')}
         while (response.includes('<br><br>'))
         return response
       })
-      // cleanData(response))
-      .then(response=>console.log("la respuesta es "+response))
       .then(response=>setBotResponse(response))
     }
     catch (error) { console.log(error) }
